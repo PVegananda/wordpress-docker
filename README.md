@@ -28,7 +28,7 @@ Tujuan project ini adalah memahami konsep:
 ---
 
 ## 🏗 System Architecture
-
+<pre>
 Browser  
 ↓  
 localhost:8000  
@@ -36,7 +36,7 @@ localhost:8000
 WordPress Container  
 ↙              ↘  
 MySQL        Redis  
-
+</pre>
 ---
 
 ## 📂 Project Structure
