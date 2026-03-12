@@ -1,333 +1,164 @@
-# Dockerize WordPress with MySQL and Redis
+# 🚀 WordPress Docker Stack
+### WordPress + MySQL + Redis using Docker Compose
 
-Project ini menjalankan **WordPress CMS menggunakan Docker Compose** dengan tiga container utama:
-
-- WordPress (Web Application)
-- MySQL (Database)
-- Redis (Object Cache)
-
-Project ini dibuat untuk memahami konsep:
-
-- Multi-container Docker architecture
-- Container networking
-- Data persistence dengan volumes
-- Service dependency menggunakan `depends_on`
+![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
+![WordPress](https://img.shields.io/badge/WordPress-21759B?style=for-the-badge&logo=wordpress&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-00758F?style=for-the-badge&logo=mysql&logoColor=white)
+![Redis](https://img.shields.io/badge/Redis-D82C20?style=for-the-badge&logo=redis&logoColor=white)
 
 ---
 
-# Architecture
-Browser
-│
-▼
-localhost:8000
-│
-▼
-WordPress Container
-│
-├── MySQL Container
-│
-└── Redis Container
+## 📚 About This Project
 
-
-WordPress berjalan di container sendiri dan terhubung ke:
-
-- MySQL sebagai database
-- Redis sebagai caching layer
-
-Semua container saling terhubung melalui **Docker network internal**.
-
----
-
-# Technologies Used
+Project ini menjalankan **WordPress CMS menggunakan Docker Compose** dengan tiga container:
 
 - Docker
-- Docker Compose
 - WordPress
 - MySQL
 - Redis
 
+Tujuan project ini adalah memahami konsep:
+
+- Multi-container Docker
+- Docker networking
+- Volume persistence
+- Service dependency (`depends_on`)
+- Redis caching
+
 ---
 
-# Project Structure
+## 🏗 System Architecture
+
+Browser  
+↓  
+localhost:8000  
+↓  
+WordPress Container  
+↙              ↘  
+MySQL        Redis  
+
+---
+
+## 📂 Project Structure
+
+```
 wordpress-docker
 │
 ├── docker-compose.yml
 ├── README.md
 │
 └── screenshots
-├── docker-ps.png
-├── wordpress-install.png
-├── wordpress-dashboard.png
-└── redis-ping.png
-
-
----
-
-# Setup Instructions
-
-## 1. Clone Repository
-git clone <repository-url>
-
-cd wordpress-docker
-
+    ├── docker-ps.png
+    ├── wordpress-install.png
+    ├── wordpress-dashboard.png
+    └── redis-test.png
+```
 
 ---
 
-## 2. Run Docker Compose
+## ⚙️ Setup
 
-Jalankan semua container dengan perintah:
+### 1. Run Docker
 
-
+```
 docker compose up -d
+```
 
+### 2. Check Containers
 
-Perintah ini akan menjalankan:
-
-- WordPress container
-- MySQL container
-- Redis container
-
----
-
-## 3. Verify Containers
-
-Cek apakah semua container sudah berjalan:
-
-
+```
 docker ps
+```
 
-
-Container yang harus muncul:
-
-- wordpress
-- mysql
-- redis
-
-📸 **SCREENSHOT NEEDED**
-
-
-(SCREENSHOT: hasil menjalankan "docker ps" yang menunjukkan 3 container running)
-
+(SCREENSHOT: hasil command `docker ps` dengan 3 container running)
 
 ---
 
-## 4. Access WordPress
+## 🌐 Access WordPress
 
-Buka browser dan akses:
+Buka di browser:
 
-
+```
 http://localhost:8000
+```
 
-
-Akan muncul halaman instalasi WordPress.
-
-📸 **SCREENSHOT NEEDED**
-
-
-(SCREENSHOT: halaman WordPress installation page di browser)
-
+(SCREENSHOT: WordPress installation page)
 
 ---
 
-## 5. Install WordPress
+## 🧑‍💻 Login WordPress
 
-Isi form instalasi:
+Setelah install WordPress:
 
-- Site Title
-- Username
-- Password
-- Email
-
-Klik **Install WordPress**.
-
-Setelah instalasi selesai, login ke dashboard.
-
-
+```
 http://localhost:8000/wp-admin
+```
 
-
-📸 **SCREENSHOT NEEDED**
-
-
-(SCREENSHOT: WordPress dashboard setelah login)
-
+(SCREENSHOT: WordPress dashboard)
 
 ---
 
-# Redis Connection Test
+## ⚡ Redis Test
 
 Masuk ke Redis container:
 
-
+```
 docker exec -it wordpress-docker-redis-1 redis-cli
-
+```
 
 Lalu jalankan:
 
-
+```
 PING
-
+```
 
 Output yang diharapkan:
 
-
+```
 PONG
+```
 
-
-📸 **SCREENSHOT NEEDED**
-
-
-(SCREENSHOT: terminal menjalankan redis-cli lalu command PING dengan output PONG)
-
+(SCREENSHOT: Redis CLI dengan output PONG)
 
 ---
 
-# Docker Compose Services
+## 🐳 Services
 
-## WordPress
+### WordPress
+Menjalankan CMS WordPress.
 
-Menjalankan CMS WordPress dan menghubungkan ke database MySQL.
+### MySQL
+Database untuk WordPress.
 
-Environment variables:
-
-
-WORDPRESS_DB_HOST=mysql
-WORDPRESS_DB_NAME=wordpress_db
-WORDPRESS_DB_USER=wordpress_user
-WORDPRESS_DB_PASSWORD=wordpress_password
-
+### Redis
+Digunakan sebagai cache untuk meningkatkan performa WordPress.
 
 ---
 
-## MySQL
+## ❓ Questions
 
-Digunakan sebagai database WordPress.
+### Why do we need volumes for MySQL?
+Volume memastikan data database tetap tersimpan walaupun container dihapus atau restart.
 
-Environment variables:
+### What is the function of depends_on?
+`depends_on` memastikan WordPress dijalankan setelah MySQL dan Redis.
 
+### How does WordPress connect to MySQL?
+WordPress menggunakan hostname service Docker:
 
-MYSQL_ROOT_PASSWORD=rootpassword
-MYSQL_DATABASE=wordpress_db
-MYSQL_USER=wordpress_user
-MYSQL_PASSWORD=wordpress_password
+```
+mysql
+```
 
-
-MySQL menggunakan **volume persistence**:
-
-
-/var/lib/mysql
-
-
-Agar data database tidak hilang ketika container restart.
-
----
-
-## Redis
-
-Redis digunakan sebagai **object cache** untuk meningkatkan performa WordPress.
-
-Redis menyimpan hasil query database di memory sehingga:
+### What are the advantages of Redis for WordPress?
+Redis memberikan caching sehingga:
 
 - Query database berkurang
-- Response website lebih cepat
-- Performance meningkat
+- Website lebih cepat
+- Server load lebih rendah
 
 ---
 
-# Docker Concepts Learned
+## 👨‍💻 Author
 
-Project ini mengajarkan beberapa konsep penting Docker:
-
-### Multi Container Application
-
-Menjalankan beberapa service dalam satu aplikasi:
-
-- WordPress
-- MySQL
-- Redis
-
----
-
-### Container Networking
-
-Docker secara otomatis membuat **internal network** sehingga container dapat saling berkomunikasi.
-
-Contoh:
-
-WordPress dapat mengakses MySQL dengan hostname:
-
-
-mysql
-
-
----
-
-### Volumes (Data Persistence)
-
-Volume digunakan untuk menyimpan data secara permanen.
-
-Contoh:
-
-
-mysql_data:/var/lib/mysql
-
-
-Tanpa volume, data database akan hilang saat container dihapus.
-
----
-
-### depends_on
-
-`depends_on` digunakan agar container WordPress dijalankan setelah container database.
-
-Contoh:
-
-
-depends_on:
-
-mysql
-
-redis
-
-
----
-
-# Questions
-
-## Why do we need volumes for MySQL?
-
-Volumes digunakan untuk memastikan data database disimpan secara persistent. Tanpa volume, data database akan hilang ketika container dihapus atau direstart.
-
----
-
-## What is the function of depends_on?
-
-`depends_on` memastikan container WordPress dijalankan setelah container MySQL dan Redis dijalankan terlebih dahulu.
-
----
-
-## How does WordPress connect to MySQL?
-
-WordPress terhubung ke MySQL melalui Docker network internal dengan hostname:
-
-
-mysql
-
-
-yang sesuai dengan nama service MySQL di docker-compose.
-
----
-
-## What are the advantages of using Redis for WordPress?
-
-Redis digunakan sebagai object cache yang memberikan beberapa keuntungan:
-
-- Mengurangi jumlah query database
-- Mempercepat loading website
-- Meningkatkan performa aplikasi
-
----
-
-# Author
-
-pvegananda
+Sherlock
