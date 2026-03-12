@@ -1,0 +1,132 @@
+# Versi docker compose yang digunakan
+# 3.8 adalah versi stabil yang sering dipakai
+version: '3.8'
+
+# services = daftar container yang akan kita jalankan
+services:
+
+  # ==============================
+  # SERVICE 1 : WORDPRESS
+  # ==============================
+  wordpress:
+
+    # Image resmi WordPress dari Docker Hub
+    image: wordpress:latest
+
+    # Mapping port
+    # Format: HOST_PORT:CONTAINER_PORT
+    # Jadi kita akses WordPress dari localhost:8000
+    ports:
+      - "8000:80"
+
+    # Environment variables untuk konfigurasi WordPress
+    environment:
+
+      # Host database
+      # Di docker network kita bisa akses service
+      # menggunakan nama servicenya
+      WORDPRESS_DB_HOST: mysql
+
+      # Nama database yang akan digunakan WordPress
+      WORDPRESS_DB_NAME: wordpress_db
+
+      # Username database
+      WORDPRESS_DB_USER: wordpress_user
+
+      # Password database
+      WORDPRESS_DB_PASSWORD: wordpress_password
+
+    # depends_on memastikan WordPress
+    # dijalankan setelah service lain start
+    depends_on:
+      - mysql
+      - redis
+
+    # volumes digunakan untuk menyimpan data
+    # supaya tidak hilang jika container dihapus
+    volumes:
+
+      # wordpress_data adalah named volume
+      # yang akan menyimpan file WordPress
+      - wordpress_data:/var/www/html
+
+    # network internal docker
+    # agar container bisa saling komunikasi
+    networks:
+      - wp-network
+
+
+
+  # ==============================
+  # SERVICE 2 : MYSQL DATABASE
+  # ==============================
+  mysql:
+
+    # Image resmi MySQL
+    image: mysql:8.0
+
+    # Environment variables konfigurasi MySQL
+    environment:
+
+      # Password root MySQL
+      MYSQL_ROOT_PASSWORD: rootpassword
+
+      # Database yang otomatis dibuat
+      MYSQL_DATABASE: wordpress_db
+
+      # User database untuk WordPress
+      MYSQL_USER: wordpress_user
+
+      # Password user database
+      MYSQL_PASSWORD: wordpress_password
+
+    # Volume untuk menyimpan data database
+    # Tanpa ini database akan hilang jika container restart
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+    # Network yang sama dengan WordPress
+    networks:
+      - wp-network
+
+
+
+  # ==============================
+  # SERVICE 3 : REDIS CACHE
+  # ==============================
+  redis:
+
+    # Redis image versi ringan
+    image: redis:alpine
+
+    # Redis tidak perlu banyak konfigurasi
+    # karena kita hanya pakai untuk caching
+
+    networks:
+      - wp-network
+
+
+
+# ==============================
+# VOLUMES (PERSISTENT STORAGE)
+# ==============================
+
+volumes:
+
+  # Volume untuk file WordPress
+  wordpress_data:
+
+  # Volume untuk data database MySQL
+  mysql_data:
+
+
+
+# ==============================
+# NETWORK DOCKER
+# ==============================
+
+networks:
+
+  # Custom network agar semua service
+  # bisa saling berkomunikasi
+  wp-network:
