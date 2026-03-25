@@ -83,15 +83,24 @@ http://localhost:8000
 
 ### 🔹 WordPress Installation Page
 
-![install](screenshots/05.png)
+![install](screenshots/04.png)
+![install](screenshots/06.png)
+
 
 ### 🔹 WordPress Dashboard
 
 ![dashboard](screenshots/07.png)
 
+### 🔹 Redis Install Setup
+
+![redis-install](screenshots/08.png)
+![redis-install](screenshots/09.png)
+![redis-install](screenshots/10.png)
+![redis-install](screenshots/11.png)
+
 ### 🔹 Redis Ping Test
 
-![redis](screenshots/08.png)
+![redis](screenshots/05.png)
 
 ### 🔹 Redis Connected
 
