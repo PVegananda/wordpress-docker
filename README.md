@@ -12,7 +12,6 @@
 
 Project ini menjalankan **WordPress CMS menggunakan Docker Compose** dengan tiga container:
 
-- Docker
 - WordPress
 - MySQL
 - Redis
