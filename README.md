@@ -181,4 +181,5 @@ yang paling utamanya redis digunakan sebagai sistem cache jadi data yang sering 
 
 ## 👨‍💻 Author
 
+any error contact me, i will help at pasyahwivegananda@gmail.com
 Pasyah Vegananda 🚀
