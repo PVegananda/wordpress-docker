@@ -8,7 +8,7 @@
 
 ---
 
-## 📚 About This Project
+## 📚 About This Project / TechStack
 
 Project ini menjalankan **WordPress CMS menggunakan Docker Compose** dengan tiga container:
 
@@ -27,138 +27,142 @@ Tujuan project ini adalah memahami konsep:
 
 ---
 
-## 🏗 System Architecture
-<pre>
-Browser  
-↓  
-localhost:8000  
-↓  
-WordPress Container  
-↙              ↘  
-MySQL        Redis  
-</pre>
----
 
-## 📂 Project Structure
 
-```
-wordpress-docker
-│
-├── docker-compose.yml
-├── README.md
-│
-└── screenshots
-    ├── docker-ps.png
-    ├── wordpress-install.png
-    ├── wordpress-dashboard.png
-    └── redis-test.png
-```
+## 📦 Services
+
+| Service   | Description            |
+| --------- | ---------------------- |
+| WordPress | Web CMS                |
+| MySQL     | Database               |
+| Redis     | In-memory cache system |
 
 ---
 
-## ⚙️ Setup
+## ⚙️ Cara Menjalankan Project
 
-### 1. Run Docker
+### 1. Clone / Masuk Folder Project
 
+```bash
+cd wordpress
 ```
-docker compose up -d
+
+### 2. Jalankan Docker
+
+```bash
+docker-compose up -d
 ```
 
-### 2. Check Containers
+### 3. Cek Container
 
-```
+```bash
 docker ps
 ```
 
-(SCREENSHOT: hasil command `docker ps` dengan 3 container running)
-
 ---
 
-## 🌐 Access WordPress
+## 🌐 Akses WordPress
 
-Buka di browser:
+Buka browser:
 
 ```
 http://localhost:8000
 ```
 
-(SCREENSHOT: WordPress installation page)
+---
+
+## 📸 Dokumentasi Screenshot
+
+### 🔹 Docker Containers Running
+
+![docker](screenshots/03.png)
+
+### 🔹 WordPress Installation Page
+
+![install](screenshots/05.png)
+
+### 🔹 WordPress Dashboard
+
+![dashboard](screenshots/08.png)
+
+### 🔹 Redis Ping Test
+
+![redis](screenshots/07.png)
+
+### 🔹 Redis Connected
+
+![redis-connected](screenshots/12.png)
 
 ---
 
-## 🧑‍💻 Login WordPress
+## 💾 Data Persistence
 
-Setelah install WordPress:
+MySQL menggunakan volume:
 
+```yaml
+volumes:
+  - mysql_data:/var/lib/mysql
 ```
-http://localhost:8000/wp-admin
-```
 
-(SCREENSHOT: WordPress dashboard)
+Tujuan:
+
+* Data tidak hilang saat container restart
 
 ---
 
-## ⚡ Redis Test
+## 🔗 Redis Integration
 
-Masuk ke Redis container:
+WordPress dikonfigurasi menggunakan:
 
+```php
+define('WP_REDIS_HOST', 'redis');
+define('WP_REDIS_PORT', 6379);
 ```
-docker exec -it wordpress-docker-redis-1 redis-cli
-```
-
-Lalu jalankan:
-
-```
-PING
-```
-
-Output yang diharapkan:
-
-```
-PONG
-```
-
-(SCREENSHOT: Redis CLI dengan output PONG)
 
 ---
 
-## 🐳 Services
+## ❓ Jawaban Pertanyaan
 
-### WordPress
-Menjalankan CMS WordPress.
+### 1. Kenapa perlu volume untuk MySQL?
 
-### MySQL
-Database untuk WordPress.
-
-### Redis
-Digunakan sebagai cache untuk meningkatkan performa WordPress.
+Volume digunakan agar data database tetap tersimpan walaupun container dihentikan atau dihapus.
 
 ---
 
-## ❓ Questions
+### 2. Apa fungsi depends_on?
 
-### Why do we need volumes for MySQL?
-Volume memastikan data database tetap tersimpan walaupun container dihapus atau restart.
+Untuk mengatur urutan startup antar service, misalnya WordPress menunggu MySQL berjalan terlebih dahulu.
 
-### What is the function of depends_on?
-`depends_on` memastikan WordPress dijalankan setelah MySQL dan Redis.
+---
 
-### How does WordPress connect to MySQL?
-WordPress menggunakan hostname service Docker:
+### 3. Bagaimana WordPress connect ke MySQL?
 
-```
-mysql
-```
+Menggunakan environment variables:
 
-### What are the advantages of Redis for WordPress?
-Redis memberikan caching sehingga:
+* WORDPRESS_DB_HOST
+* WORDPRESS_DB_USER
+* WORDPRESS_DB_PASSWORD
+* WORDPRESS_DB_NAME
 
-- Query database berkurang
-- Website lebih cepat
-- Server load lebih rendah
+---
+
+### 4. Apa keuntungan pakai Redis?
+
+* Mempercepat loading website
+* Mengurangi query database
+* Meningkatkan performa
+
+---
+
+## ✅ Status
+
+✔️ All containers running
+✔️ WordPress accessible
+✔️ Redis connected
+✔️ Data persistence working
 
 ---
 
 ## 👨‍💻 Author
 
-Sherlock
+Pasyah Vegananda 🚀
