@@ -138,13 +138,13 @@ define('WP_REDIS_PORT', 6379);
 
 ### 1. Kenapa perlu volume untuk MySQL?
 
-Volume digunakan agar data database tetap tersimpan walaupun container dihentikan atau dihapus.
+Volume digunakan agar data database tetap tersimpan walaupun container dihentikan atau dihapus (bersifat permanen) jadi jika tanda adanya volume otomatis setiap container di buat ulang database akan terhapus. 
 
 ---
 
 ### 2. Apa fungsi depends_on?
 
-Untuk mengatur urutan startup antar service, misalnya WordPress menunggu MySQL berjalan terlebih dahulu.
+Untuk mengatur urutan startup antar service, contoh: WordPress menunggu MySQL berjalan terlebih dahulu karena kalau terbalik jelas akan error :D
 
 ---
 
@@ -152,10 +152,12 @@ Untuk mengatur urutan startup antar service, misalnya WordPress menunggu MySQL b
 
 Menggunakan environment variables:
 
-* WORDPRESS_DB_HOST
+* WORDPRESS_DB_HOST 
 * WORDPRESS_DB_USER
 * WORDPRESS_DB_PASSWORD
 * WORDPRESS_DB_NAME
+
+untuk isi dari variables di atas menyesuaikan database di local masing - masing :D
 
 ---
 
@@ -165,6 +167,7 @@ Menggunakan environment variables:
 * Mengurangi query database
 * Meningkatkan performa
 
+yang paling utamanya redis digunakan sebagai sistem cache jadi data yang sering di akses pengunjung ke sebuah website pasti akan tersimpan di memori sehingga lebih cepat dalam load sebuah website 
 ---
 
 ## ✅ Status
