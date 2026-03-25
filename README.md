@@ -73,6 +73,10 @@ http://localhost:8000
 
 ## 📸 Dokumentasi Screenshot
 
+### 🔹 Docker Installation Step Running
+![setup](screenshots/01.png)
+![setup](screenshots/02.png)
+
 ### 🔹 Docker Containers Running
 
 ![docker](screenshots/03.png)
@@ -83,11 +87,11 @@ http://localhost:8000
 
 ### 🔹 WordPress Dashboard
 
-![dashboard](screenshots/08.png)
+![dashboard](screenshots/07.png)
 
 ### 🔹 Redis Ping Test
 
-![redis](screenshots/07.png)
+![redis](screenshots/08.png)
 
 ### 🔹 Redis Connected
 
