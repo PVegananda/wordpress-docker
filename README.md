@@ -165,8 +165,9 @@ untuk isi dari variables di atas menyesuaikan database di local masing - masing 
 * Mempercepat loading website
 * Mengurangi query database
 * Meningkatkan performa
-
+  
 yang paling utamanya redis digunakan sebagai sistem cache jadi data yang sering di akses pengunjung ke sebuah website pasti akan tersimpan di memori sehingga lebih cepat dalam load sebuah website 
+
 ---
 
 ## ✅ Status
