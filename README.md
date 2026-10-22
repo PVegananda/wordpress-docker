@@ -1,185 +1,153 @@
-# 🚀 WordPress Docker Stack
-### WordPress + MySQL + Redis using Docker Compose
+<div align="center">
 
-![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
-![WordPress](https://img.shields.io/badge/WordPress-21759B?style=for-the-badge&logo=wordpress&logoColor=white)
-![MySQL](https://img.shields.io/badge/MySQL-00758F?style=for-the-badge&logo=mysql&logoColor=white)
-![Redis](https://img.shields.io/badge/Redis-D82C20?style=for-the-badge&logo=redis&logoColor=white)
+# WordPress Docker Stack
 
----
+### A portable WordPress environment with MySQL and Redis
 
-## 📚 About This Project / TechStack
+<p>
+  <a href="https://www.docker.com/"><img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker"></a>
+  <a href="https://wordpress.org/"><img src="https://img.shields.io/badge/WordPress-21759B?style=for-the-badge&logo=wordpress&logoColor=white" alt="WordPress"></a>
+  <a href="https://www.mysql.com/"><img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white" alt="MySQL"></a>
+  <a href="https://redis.io/"><img src="https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=redis&logoColor=white" alt="Redis"></a>
+</p>
 
-Project ini menjalankan **WordPress CMS menggunakan Docker Compose** dengan tiga container:
+<p>
+  <img src="https://img.shields.io/badge/Compose-v2-2496ED?style=flat-square&logo=docker&logoColor=white" alt="Docker Compose">
+</p>
 
-- WordPress
-- MySQL
-- Redis
+</div>
 
-Tujuan project ini adalah memahami konsep:
+## Overview
 
-- Multi-container Docker
-- Docker networking
-- Volume persistence
-- Service dependency (`depends_on`)
-- Redis caching
+This repository provides a self-contained WordPress development environment built
+with Docker Compose. It combines the WordPress application with MySQL for
+persistent data storage and Redis for object caching.
 
----
+The stack is designed to be simple to start, easy to reproduce, and suitable
+for local development or portfolio demonstrations.
 
+## Architecture
 
+| Service | Image | Purpose |
+| --- | --- | --- |
+| WordPress | `wordpress:latest` | Web application and content management system |
+| MySQL | `mysql:8.0` | Relational database with persistent storage |
+| Redis | `redis:alpine` | In-memory object cache |
 
-## 📦 Services
+All services communicate through the private `wp-network` Docker network.
+Named volumes keep WordPress files and MySQL data available across container
+restarts.
 
-| Service   | Description            |
-| --------- | ---------------------- |
-| WordPress | Web CMS                |
-| MySQL     | Database               |
-| Redis     | In-memory cache system |
+## Requirements
 
----
+- [Docker Desktop](https://www.docker.com/products/docker-desktop/) or Docker
+  Engine with Compose v2
+- A free local port `8000`
 
-## ⚙️ Cara Menjalankan Project
+## Quick Start
 
-### 1. Clone / Masuk Folder Project
-
-```bash
-cd wordpress
-```
-
-### 2. Jalankan Docker
-
-```bash
-docker-compose up -d
-```
-
-### 3. Cek Container
+Clone the repository and move into the project directory:
 
 ```bash
-docker ps
+git clone https://github.com/PVegananda/wordpress-docker.git
+cd wordpress-docker
 ```
 
----
+Start the services in the background:
 
-## 🌐 Akses WordPress
-
-Buka browser:
-
-```
-http://localhost:8000
+```bash
+docker compose up -d
 ```
 
----
+Open [http://localhost:8000](http://localhost:8000) in a browser and complete
+the WordPress setup flow.
 
-## 📸 Dokumentasi Screenshot
+To view the running containers:
 
-### 🔹 Docker Installation Step Running
-![setup](screenshots/01.png)
-![setup](screenshots/02.png)
-
-### 🔹 Docker Containers Running
-
-![docker](screenshots/03.png)
-
-### 🔹 WordPress Installation Page
-
-![install](screenshots/04.png)
-![install](screenshots/06.png)
-
-
-### 🔹 WordPress Dashboard
-
-![dashboard](screenshots/07.png)
-
-### 🔹 Redis Install Setup
-
-![redis-install](screenshots/08.png)
-![redis-install](screenshots/09.png)
-![redis-install](screenshots/10.png)
-![redis-install](screenshots/11.png)
-
-### 🔹 Redis Ping Test
-
-![redis](screenshots/05.png)
-
-### 🔹 Redis Connected
-
-![redis-connected](screenshots/12.png)
-
----
-
-## 💾 Data Persistence
-
-MySQL menggunakan volume:
-
-```yaml
-volumes:
-  - mysql_data:/var/lib/mysql
+```bash
+docker compose ps
 ```
 
-Tujuan:
+To stop the environment without removing persistent data:
 
-* Data tidak hilang saat container restart
+```bash
+docker compose down
+```
 
----
+To stop the environment and remove its named volumes:
 
-## 🔗 Redis Integration
+```bash
+docker compose down -v
+```
 
-WordPress dikonfigurasi menggunakan:
+## Configuration
+
+The default local connection settings are defined in
+[`docker-compose.yml`](./docker-compose.yml):
+
+| Setting | Value |
+| --- | --- |
+| WordPress URL | `http://localhost:8000` |
+| Database host | `mysql` |
+| Database name | `wordpress_db` |
+| Database user | `wordpress_user` |
+| Redis host | `redis` |
+| Redis port | `6379` |
+
+The credentials in the Compose file are intended for local development only.
+Use environment variables or a secrets manager before deploying this stack to
+a shared or production environment.
+
+## Redis Object Cache
+
+After WordPress is running:
+
+1. Install and activate a Redis object-cache plugin from the WordPress admin.
+2. Use `redis` as the Redis host and `6379` as the port when prompted.
+3. Confirm the connection from the plugin's status page.
+
+WordPress can also use the following constants in its configuration:
 
 ```php
 define('WP_REDIS_HOST', 'redis');
 define('WP_REDIS_PORT', 6379);
 ```
 
----
+## Screenshots
 
-## ❓ Jawaban Pertanyaan
+### Environment Setup
 
-### 1. Kenapa perlu volume untuk MySQL?
+![Docker environment setup](screenshots/docker-environment-setup.png)
+![Docker Compose services](screenshots/docker-compose-services.png)
+![Docker container status](screenshots/docker-container-status.png)
 
-Volume digunakan agar data database tetap tersimpan walaupun container dihentikan atau dihapus (bersifat permanen) jadi jika tanda adanya volume otomatis setiap container di buat ulang database akan terhapus. 
+### WordPress Installation
 
----
+![WordPress installation](screenshots/wordpress-installation.png)
+![WordPress configuration](screenshots/wordpress-configuration.png)
+![WordPress dashboard](screenshots/wordpress-dashboard.png)
 
-### 2. Apa fungsi depends_on?
+### Redis Integration
 
-Untuk mengatur urutan startup antar service, contoh: WordPress menunggu MySQL berjalan terlebih dahulu karena kalau terbalik jelas akan error :D
+![Redis plugin installation](screenshots/redis-plugin-installation.png)
+![Redis plugin configuration](screenshots/redis-plugin-configuration.png)
+![Redis cache status](screenshots/redis-cache-status.png)
+![Redis cache connection](screenshots/redis-cache-connection.png)
+![Redis ping test](screenshots/redis-ping-test.png)
+![Redis connected](screenshots/redis-connected.png)
 
----
+## Project Structure
 
-### 3. Bagaimana WordPress connect ke MySQL?
+```text
+.
+├── docker-compose.yml
+├── README.md
+└── screenshots/
+```
 
-Menggunakan environment variables:
+## Author
 
-* WORDPRESS_DB_HOST 
-* WORDPRESS_DB_USER
-* WORDPRESS_DB_PASSWORD
-* WORDPRESS_DB_NAME
+Created by [Pasyah Vegananda](https://github.com/PVegananda).
 
-untuk isi dari variables di atas menyesuaikan database di local masing - masing :D
-
----
-
-### 4. Apa keuntungan pakai Redis?
-
-* Mempercepat loading website
-* Mengurangi query database
-* Meningkatkan performa
-  
-yang paling utamanya redis digunakan sebagai sistem cache jadi data yang sering di akses pengunjung ke sebuah website pasti akan tersimpan di memori sehingga lebih cepat dalam load sebuah website 
-
----
-
-## ✅ Status
-
-✔️ All containers running
-✔️ WordPress accessible
-✔️ Redis connected
-✔️ Data persistence working
-
----
-
-## 👨‍💻 Author
-
-any error contact me, i will help at pasyahwivegananda@gmail.com
-Pasyah Vegananda 🚀
+For questions or collaboration, feel free to open an issue or connect through
+GitHub.
