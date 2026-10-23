@@ -1,8 +1,8 @@
 <div align="center">
 
-# WordPress Docker Stack
+# Launch WordPress Faster with Docker, MySQL & Redis
 
-### A portable WordPress environment with MySQL and Redis
+### A ready-to-use, reproducible WordPress stack for fast local development
 
 <p>
   <a href="https://www.docker.com/"><img src="https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker"></a>
@@ -19,12 +19,14 @@
 
 ## Overview
 
-This repository provides a self-contained WordPress development environment built
-with Docker Compose. It combines the WordPress application with MySQL for
-persistent data storage and Redis for object caching.
+Launch a complete WordPress development environment in minutes with Docker
+Compose. This stack brings together WordPress, MySQL, and Redis in one
+reproducible setup, so you can build, test, and showcase websites without
+manually configuring each service.
 
-The stack is designed to be simple to start, easy to reproduce, and suitable
-for local development or portfolio demonstrations.
+With persistent storage, private networking, and Redis object caching already
+configured, it is simple to start, easy to reproduce, and ideal for local
+development, learning, and portfolio demonstrations.
 
 ## Architecture
 
