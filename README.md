@@ -51,8 +51,8 @@ restarts.
 Clone the repository and move into the project directory:
 
 ```bash
-git clone https://github.com/PVegananda/wordpress-docker.git
-cd wordpress-docker
+git clone https://github.com/PVegananda/wordpress-docker-starter.git
+cd wordpress-docker-starter
 ```
 
 Start the services in the background:
